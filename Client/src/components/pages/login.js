@@ -19,16 +19,28 @@ const Login = (props) => {
   const { error, handleSubmit, pristine, reset, submitting } = props;
 
   const onSubmit = (formData) => {
-    props.signIn(formData);
+    console.log("test");
+    console.log(props.isCaptchaChecked);
+    if (props.isCaptchaChecked) {
+      props.signIn(formData);
+    } else {
+      alert("Please check the captcha");
+    }
   };
   return (
     <div>
-      <h2>Hoşgeldiniz!</h2>
-      <p>
-        Dijital dünyanın ilk aracılı satış sistemini deneyimlemeye hazır
-        mısınız?
-      </p>
-      <form onSubmit={handleSubmit(onSubmit)} className="ui form">
+      <div className="ui grid padded">
+        <div class="row">
+          <h2>Hoşgeldiniz!</h2>
+        </div>
+        <div class="row">
+          <p>
+            Dijital dünyanın ilk aracılı satış sistemini deneyimlemeye hazır
+            mısınız?
+          </p>
+        </div>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="ui form ">
         <div className="two fields">
           <div className="four wide field">
             <Field
@@ -47,8 +59,9 @@ const Login = (props) => {
             />
           </div>
         </div>
-        <Field name="captcharesponse" component={Captcha} />
-
+        <div className="four wide field">
+          <Field name="captcharesponse" component={Captcha} />
+        </div>
         {error && <strong>{error}</strong>}
         <div className="bottom aligned">
           <button
@@ -71,8 +84,10 @@ const Login = (props) => {
     </div>
   );
 };
-
-export default connect(null, { signIn })(
+const mapStateToProps = (state) => {
+  return { isCaptchaChecked: state.captcha.isCaptchaChecked };
+};
+export default connect(mapStateToProps, { signIn })(
   reduxForm({
     form: "submitValidation", // a unique identifier for this form
   })(Login)

@@ -14,3 +14,26 @@ export const signIn = (formData) => async (dispatch) => {
     alert("Username does not exist");
   }
 };
+
+export const captchaChecked = (formData) => async (dispatch) => {
+  const RECAPTCHA_SERVER_KEY = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe";
+  const humanKey = formData;
+  console.log(humanKey);
+  // const response = await axios.post(
+  //   "https://www.google.com/recaptcha/api/siteverify",
+  //   {
+  //     secret: RECAPTCHA_SERVER_KEY,
+  //     response: humanKey,
+  //   }
+  // );
+  // console.log(response);
+  const isCaptchaChecked = {
+    value: false,
+  };
+  if (humanKey) {
+    console.log("here");
+    isCaptchaChecked.value = true;
+  }
+
+  dispatch({ type: "captchaChecked", payload: isCaptchaChecked });
+};
